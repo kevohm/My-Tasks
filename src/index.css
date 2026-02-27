@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+
+button{
+    @apply rounded-lg cursor-pointer  px-2 py-1
+}

@@ -4,3 +4,6 @@ export type Post = {
   title: string;
   body: string;
 };
+
+
+export type UpdatePostPayload = Pick<Post, "body" | "title">;

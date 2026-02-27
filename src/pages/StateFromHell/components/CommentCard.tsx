@@ -1,31 +1,36 @@
 import React, { useState } from "react";
 import type {
-  Post,
-  UpdatePostPayload,
-} from "../../../types/StateFromHell/post";
-import CommentList from "./CommentList";
+  Comment,
+  UpdateCommentPayload,
+} from "../../../types/StateFromHell/comment";
 import useRenderCount from "../hooks/useRenderCount";
-import { fetchPostById, updatePostById } from "../services/posts";
+import { updateCommentById } from "../services/comments";
 
-const PostCard = ({ post }: { post: Post }) => {
+export const CommentCard = ({ comment }: { comment: Comment }) => {
   const { CountComponent } = useRenderCount();
   const [mode, setMode] = useState<"view" | "edit">("view");
   const [loading, setLoading] = useState(false);
-  const [editData, setEditData] = useState<UpdatePostPayload>({
-    title: post?.title || "",
-    body: post?.body || "",
+  const [editData, setEditData] = useState<UpdateCommentPayload>({
+    body: comment?.body || "",
+    email: comment?.email || "",
+    name: comment?.name || "",
   });
 
-  const handlePostUpdate = async () => {
+  const defaultCommentState = {
+    email: comment?.email || "",
+    body: comment?.body || "",
+    name: comment?.name || "",
+  };
+
+  const handleCommentUpdate = async () => {
     setLoading(true);
     try {
-      const resp = await updatePostById(post.id, editData);
+      const resp = await updateCommentById(comment.id, editData);
       const { id } = await resp.json();
-      const dataResp = await fetchPostById(id);
-      const data = (await dataResp?.json()) as Post;
+
       setMode("view");
     } catch (error) {
-      setEditData({ title: post?.title, body: post?.body });
+      setEditData(defaultCommentState);
       setMode("view");
     } finally {
       setLoading(false);
@@ -33,24 +38,25 @@ const PostCard = ({ post }: { post: Post }) => {
   };
 
   const handleCancel = () => {
-    setEditData({ title: post.title, body: post.body });
+    setEditData(defaultCommentState);
     setMode("view");
   };
 
   return (
-    <div key={post.id}>
-      <div className="flex justify-between items-center">
+    <div className="border-slate-200 border rounded-xl p-1 px-2">
+      <div className="flex items-center justify-between">
         {mode === "view" ? (
-          <h1 className="text-sm font-semibold text-slate-600">{post.title}</h1>
+          <p className="text-sm text-slate-500">{comment.name}</p>
         ) : (
           <input
             className="w-full px-2 py-1"
-            value={editData?.title}
+            value={editData?.name}
             onChange={(e) =>
-              setEditData((prev) => ({ ...prev, title: e.target.value }))
+              setEditData((prev) => ({ ...prev, name: e.target.value }))
             }
           />
         )}
+
         <div className="flex gap-1 items-center">
           <div className="rounded-xl flex gap-2 bg-slate-100 px-2 py-1">
             <button
@@ -72,7 +78,7 @@ const PostCard = ({ post }: { post: Post }) => {
         </div>
       </div>
       {mode === "view" ? (
-        <p className="text-sm text-slate-500">{post.body}</p>
+        <p className="text-sm text-slate-700">{comment.body}</p>
       ) : (
         <textarea
           className="w-full px-2 py-1"
@@ -81,6 +87,17 @@ const PostCard = ({ post }: { post: Post }) => {
             setEditData((prev) => ({ ...prev, body: e.target.value }))
           }
           rows={5}
+        />
+      )}
+      {mode === "view" ? (
+        <p className="text-sm text-slate-500">{comment.email}</p>
+      ) : (
+        <input
+          type="email"
+          value={editData?.email}
+          onChange={(e) =>
+            setEditData((prev) => ({ ...prev, email: e.target.value }))
+          }
         />
       )}
 
@@ -96,15 +113,12 @@ const PostCard = ({ post }: { post: Post }) => {
           <button
             disabled={loading}
             className="bg-blue-600 text-white"
-            onClick={handlePostUpdate}
+            onClick={handleCommentUpdate}
           >
             {loading ? "saving..." : "save"}
           </button>
         </div>
       )}
-      <CommentList postId={post?.id} />
     </div>
   );
 };
-
-export default PostCard;
