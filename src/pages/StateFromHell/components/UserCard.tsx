@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+
 import type { User } from "../../../types/StateFromHell/user";
-import { fetchUserPosts } from "../services/posts";
-import type { Post } from "../../../types/StateFromHell/post";
-import PostCard from "./PostCard";
+
 import PostList from "./PostList";
 import useRenderCount from "../hooks/useRenderCount";
 

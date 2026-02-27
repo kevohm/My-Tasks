@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import type {
   Post,
   UpdatePostPayload,
 } from "../../../types/StateFromHell/post";
 import CommentList from "./CommentList";
 import useRenderCount from "../hooks/useRenderCount";
-import { fetchPostById, updatePostById } from "../services/posts";
+import {  updatePostById } from "../services/posts";
 
 const PostCard = ({ post }: { post: Post }) => {
   const { CountComponent } = useRenderCount();
@@ -20,9 +20,11 @@ const PostCard = ({ post }: { post: Post }) => {
     setLoading(true);
     try {
       const resp = await updatePostById(post.id, editData);
-      const { id } = await resp.json();
-      const dataResp = await fetchPostById(id);
-      const data = (await dataResp?.json()) as Post;
+      await resp.json();
+      
+    //await fetchPostById(id);
+
+     // const data = (await dataResp?.json()) as Post;
       setMode("view");
     } catch (error) {
       setEditData({ title: post?.title, body: post?.body });

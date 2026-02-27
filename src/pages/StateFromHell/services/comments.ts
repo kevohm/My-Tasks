@@ -1,6 +1,6 @@
 // /comments?postId=1
 
-import type { Comment, UpdateCommentPayload } from "../../../types/StateFromHell/comment";
+import type { UpdateCommentPayload } from "../../../types/StateFromHell/comment";
 
 export const fetchPostComments = async (id: number) => {
   const response = await fetch(

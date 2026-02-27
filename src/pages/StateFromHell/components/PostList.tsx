@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { fetchUserPosts } from "../services/posts";
 import type { Post } from "../../../types/StateFromHell/post";
 import PostCard from "./PostCard";

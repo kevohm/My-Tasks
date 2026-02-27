@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useState } from "react";
 import { fetchUser } from "./services/user";
 import type { User } from "../../types/StateFromHell/user";
 import UserCard from "./components/UserCard";

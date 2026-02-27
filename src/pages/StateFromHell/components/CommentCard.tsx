@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import type {
   Comment,
   UpdateCommentPayload,
@@ -26,7 +26,7 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
     setLoading(true);
     try {
       const resp = await updateCommentById(comment.id, editData);
-      const { id } = await resp.json();
+       await resp.json();
 
       setMode("view");
     } catch (error) {

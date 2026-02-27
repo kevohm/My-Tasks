@@ -1,4 +1,4 @@
-import type { Post, UpdatePostPayload } from "../../../types/StateFromHell/post";
+import type {  UpdatePostPayload } from "../../../types/StateFromHell/post";
 
 export const fetchUserPosts = async (id: number) => {
   const response = await fetch(
