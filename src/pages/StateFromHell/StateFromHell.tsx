@@ -1,18 +1,15 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchUser } from "./services/user";
-import type { User } from "../../types/StateFromHell/user";
+import type { User } from "./types/user";
 import UserCard from "./components/UserCard";
 import useRenderCount from "./hooks/useRenderCount";
 
 const StateFromHell = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const {CountComponent} = useRenderCount()
+  const { CountComponent } = useRenderCount();
   const getUsers = async () => {
-    const response = await fetchUser();
-    if (response.ok) {
-      const data = await response?.json();
-      setUsers(data as User[]);
-    }
+    const data = await fetchUser();
+    setUsers(data as User[]);
   };
   useEffect(() => {
     getUsers();

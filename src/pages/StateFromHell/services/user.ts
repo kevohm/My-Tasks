@@ -1,5 +1,5 @@
+import { fetchWithCache } from "../utils/api";
 
 export const fetchUser = async () => {
-  const response = await fetch("https://jsonplaceholder.typicode.com/users");
-  return response
+  return await fetchWithCache("https://jsonplaceholder.typicode.com/users");
 };

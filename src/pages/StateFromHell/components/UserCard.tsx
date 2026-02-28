@@ -1,5 +1,4 @@
-
-import type { User } from "../../../types/StateFromHell/user";
+import type { User } from "../types/user";
 
 import PostList from "./PostList";
 import useRenderCount from "../hooks/useRenderCount";

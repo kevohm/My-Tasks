@@ -1,20 +1,17 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchPostComments } from "../services/comments";
 import { CommentCard } from "./CommentCard";
-import type { Comment } from "../../../types/StateFromHell/comment";
+import type { Comment } from "../types/comment";
 import useRenderCount from "../hooks/useRenderCount";
 
 const CommentList = ({ postId }: { postId: number }) => {
   const [comments, setcomments] = useState<Comment[]>([]);
-  const {CountComponent} = useRenderCount()
+  const { CountComponent } = useRenderCount();
 
   const getPostComments = async () => {
-    const response = await fetchPostComments(postId);
-    if (response.ok) {
-      const data = await response?.json();
-      console.log(data)
-      setcomments(data as Comment[]);
-    }
+    const data = await fetchPostComments(postId);
+    setcomments(data as Comment[]);
+
   };
   useEffect(() => {
     getPostComments();
@@ -23,8 +20,8 @@ const CommentList = ({ postId }: { postId: number }) => {
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between">
-      <h1 className="text-lg font-semibold">Comments</h1>
-      
+        <h1 className="text-lg font-semibold">Comments</h1>
+
         {CountComponent}
       </div>
       <div className="flex flex-col gap-2.5">

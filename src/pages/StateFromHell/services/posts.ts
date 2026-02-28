@@ -1,10 +1,10 @@
-import type {  UpdatePostPayload } from "../../../types/StateFromHell/post";
+import type { UpdatePostPayload } from "../types/post";
+import { fetchWithCache } from "../utils/api";
 
 export const fetchUserPosts = async (id: number) => {
-  const response = await fetch(
+  return await fetchWithCache(
     `https://jsonplaceholder.typicode.com/users/${id}/posts`,
   );
-  return response;
 };
 
 export const updatePostById = async (
@@ -21,12 +21,8 @@ export const updatePostById = async (
   return response;
 };
 
-
-export const fetchPostById = async (
-  id: number
-) => {
-  const response = await fetch(
+export const fetchPostById = async (id: number) => {
+  return await fetchWithCache(
     `https://jsonplaceholder.typicode.com/posts/${id}`,
   );
-  return response;
 };

@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate", // Automatically update service worker
-      injectRegister: "script",
+
       // includeAssets: [
       //   "favicon.svg",
       //   "favicon.ico",
@@ -46,14 +46,60 @@ export default defineConfig({
       strategies: "generateSW", // generates service worker with caching
       workbox: {
         runtimeCaching: [
+          // ✅ GET requests (cache them)
           {
-            urlPattern: /^https:\/\/jsonplaceholder\.typicode\.com\/.*$/,
-            handler: "NetworkFirst",
+            urlPattern: /^https:\/\/jsonplaceholder\.typicode\.com\/.*/,
+            method: "GET",
+            handler: "StaleWhileRevalidate",
             options: {
-              cacheName: "api-cache",
+              cacheName: "api-fetch-cache",
               expiration: {
                 maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24, // 1 day
+                maxAgeSeconds: 60 * 60 * 24,
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+
+          // ✅ Mutations (queue them)
+          {
+            urlPattern: /^https:\/\/jsonplaceholder\.typicode\.com\/.*/,
+            method: "POST",
+            handler: "NetworkOnly",
+            options: {
+              backgroundSync: {
+                name: "api-create-queue",
+                options: {
+                  maxRetentionTime: 24 * 60,
+                },
+              },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/jsonplaceholder\.typicode\.com\/.*/,
+            method: "PUT",
+            handler: "NetworkOnly",
+            options: {
+              backgroundSync: {
+                name: "api-update-queue",
+                options: {
+                  maxRetentionTime: 24 * 60,
+                },
+              },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/jsonplaceholder\.typicode\.com\/.*/,
+            method: "DELETE",
+            handler: "NetworkOnly",
+            options: {
+              backgroundSync: {
+                name: "api-delete-queue",
+                options: {
+                  maxRetentionTime: 24 * 60,
+                },
               },
             },
           },

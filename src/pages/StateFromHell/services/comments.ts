@@ -1,18 +1,17 @@
 // /comments?postId=1
 
-import type { UpdateCommentPayload } from "../../../types/StateFromHell/comment";
+import type { UpdateCommentPayload } from "../types/comment";
+import { fetchWithCache } from "../utils/api";
 
 export const fetchPostComments = async (id: number) => {
-  const response = await fetch(
+  return await fetchWithCache(
     `https://jsonplaceholder.typicode.com/posts/${id}/comments`,
   );
-  return response;
 };
-
 
 export const updateCommentById = async (
   id: number,
-  payload: UpdateCommentPayload
+  payload: UpdateCommentPayload,
 ) => {
   const response = await fetch(
     `https://jsonplaceholder.typicode.com/comments/${id}`,
@@ -23,5 +22,3 @@ export const updateCommentById = async (
   );
   return response;
 };
-
-

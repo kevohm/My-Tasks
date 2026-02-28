@@ -1,8 +1,5 @@
 import { useState } from "react";
-import type {
-  Comment,
-  UpdateCommentPayload,
-} from "../../../types/StateFromHell/comment";
+import type { Comment, UpdateCommentPayload } from "../types/comment";
 import useRenderCount from "../hooks/useRenderCount";
 import { updateCommentById } from "../services/comments";
 
@@ -26,7 +23,7 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
     setLoading(true);
     try {
       const resp = await updateCommentById(comment.id, editData);
-       await resp.json();
+      await resp.json();
 
       setMode("view");
     } catch (error) {
